@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./default.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form>
+            <p:growl id="growl" showDetail="true" />
+            <p:outputPanel style="margin-top: 20px; margin-left: 20px; font-size: 25px;">
+                <p:outputPanel>
+                    Valor: 
+                    <p:inputNumber symbol="R$ " decimalSeparator="," thousandSeparator="." style="margin-top: 5px;" value="#{receitaMB.valor}"/>
+                </p:outputPanel>
+                <p:outputPanel>    
+                    Data de recebimento: 
+                    <p:inputMask mask="99/99/9999" style="margin-top: 5px;" value="#{receitaMB.dataRecebimento}"/> 
+                </p:outputPanel>
+                <p:outputPanel>    
+                    Data de recebimento esperado:
+                    <p:inputMask mask="99/99/9999" style="margin-top: 5px;" value="#{receitaMB.dataRecebimentoEsperado}"/> 
+                </p:outputPanel>
+                <p:outputPanel>    
+                    Descrição: 
+                    <p:inputText style="margin-top: 5px;" value="#{receitaMB.descrição}"/> 
+                </p:outputPanel>
+                <p:outputPanel>    
+                    Tipo de receita: 
+                    <p:selectOneMenu style="margin-top: 10px;" value="#{receitaMB.tipoReceita}">
+                        <f:selectItem itemLabel="Selecionar" itemValue=""/>
+                        <f:selectItem itemLabel="Salário" itemValue="Salário"/>
+                        <f:selectItem itemLabel="Prêmio" itemValue="Prêmio"/>
+                        <f:selectItem itemLabel="Presente" itemValue="Presente"/>
+                        <f:selectItem itemLabel="Outros" itemValue="Outros"/>
+                    </p:selectOneMenu> 
+                </p:outputPanel>
+                <p:outputPanel>
+                    Número da conta:
+                    <p:selectOneMenu style="margin-top: 10px;" value="#{receitaMB.conta.id}">
+                        <f:selectItem itemLabel="Selecionar" itemValue=""/>
+                        <f:selectItems value="#{contaMB.todasContas}" var="conta" itemValue="#{conta.id}"/>
+                    </p:selectOneMenu> 
+                </p:outputPanel>
+                <p:outputPanel style="text-align: center;">
+                    <p:commandButton style="margin-right: 5px;" value="Salvar" action="#{receitaMB.salvarReceita()}"/> 
+                    <p:commandButton value="Cancelar" action="#{trocaTelaB.getReceitas}"/> 
+                </p:outputPanel>
+            </p:outputPanel>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

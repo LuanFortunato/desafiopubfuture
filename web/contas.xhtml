@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./default.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="up">
+            <p:growl id="growl" showDetail="true" />
+
+            <h:inputHidden value="#{contaMB.id}" />
+
+            <p:outputPanel style="text-align: start; margin-top: 10px; margin-bottom: 10px; padding-right: 30px;">
+                <h:outputText value="Saldo Total: R$ #{contaMB.saldoTotal}" style="margin-right: 10px; font-weight: bold"/>
+                <p:commandButton style="margin-right: 5px;" value="Cadastrar conta" action="#{trocaTelaB.getCadastroContas()}"/> 
+                <p:commandButton value="Voltar" action="#{trocaTelaB.getTelaInicial()}"/> 
+            </p:outputPanel>
+
+            <p:outputPanel  >
+                <p:toolbar id="tb" >
+                    <f:facet name="left">
+                        Saldo: 
+                        <p:inputNumber symbol="R$ " decimalSeparator="," thousandSeparator="." style="margin-right: 5px;" value="#{contaMB.saldo}"/> 
+                        Tipo de conta: 
+                        <p:selectOneMenu style="margin-top: 10px;" value="#{contaMB.tipoConta}">
+                            <f:selectItem itemLabel="Selecionar" itemValue=""/>
+                            <f:selectItem itemLabel="Carteira" itemValue="Carteira"/>
+                            <f:selectItem itemLabel="Conta Correnta" itemValue="Conta Corrente"/>
+                            <f:selectItem itemLabel="Poupança" itemValue="Poupança"/>
+                        </p:selectOneMenu> 
+                        Instituição financeira:
+                        <p:inputText value="#{contaMB.instituiçãoFinanceira}"/>
+
+                        <p:commandButton style="margin-left: 20px;" value="Salvar alterações" action="#{contaMB.salvarConta()}" update="up"/>
+
+                    </f:facet>
+                </p:toolbar>
+                <p:sticky target="tb"/>
+            </p:outputPanel>
+
+            <p:outputPanel  >
+                <p:toolbar id="tb1" >
+
+                    <f:facet name="left">
+                        <p:outputPanel style="width: 100%; font-size: 30px; font-weight: bold;">
+                            Transferências
+                        </p:outputPanel>
+                        <p:outputPanel style="width: 100%; margin-top: 10px;">
+                            ID da conta: 
+                            <h:outputText style="margin-right: 5px;" value="#{contaMB.id}"  /> 
+                            Saldo da conta: 
+                            <h:outputText style="margin-right: 5px;" value="#{contaMB.saldo}"/> 
+                        </p:outputPanel>
+                        <p:outputPanel style="width: 100%; margin-top: 10px;">
+                            ID da conta recebedora:
+                            <p:inputText style="margin-top: 10px;" value="#{contaMB.contaT}"/>
+                            Quantia da transferência:
+                            <p:inputNumber value="#{contaMB.quantiaT}"/>
+                        </p:outputPanel>
+
+                        <p:outputPanel style="width: 80%; text-align: end;">
+                            <p:commandButton style="margin-left: 20px; margin-top: 15px;" value="Confirmar Transferência" action="#{contaMB.confirmarTransferencia()}" update="up"/>
+                        </p:outputPanel>    
+                        
+                    </f:facet>
+                </p:toolbar>
+                <p:sticky target="tb"/>
+            </p:outputPanel>
+
+            <p:dataTable var="conta" value="#{contaMB.todasContas}">
+                <p:column headerText="ID">
+                    <h:outputText value="#{conta.id}"/>
+                </p:column>
+                <p:column headerText="Saldo">
+                    <h:outputText value="R$ #{conta.saldo}"/>
+                </p:column>
+                <p:column headerText="Tipo de Conta">
+                    <h:outputText value="#{conta.tipoConta}"/>
+                </p:column>
+                <p:column headerText="Instituição Financeira">
+                    <h:outputText value="#{conta.instituiçãoFinanceira}"/>
+                </p:column>
+                <p:column>
+                    <p:commandButton value="Editar conta" action="#{contaMB.editarConta(conta)}" update="up"/>
+                </p:column>
+                <p:column>
+                    <p:commandButton value="Exlcuir conta" action="#{contaMB.removerConta(conta)}"/>
+                </p:column>
+                <p:column>
+                    <p:commandButton value="Realizar transferência" action="#{contaMB.iniciarTransferencia(conta)}" update="up"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
